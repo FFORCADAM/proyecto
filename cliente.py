@@ -70,15 +70,19 @@ def isMillerRabinPassed(miller_rabin_candidate):
     return True
 
 
-if __name__ == '__main__':
-    while True:
-        n = 1024
-        prime_candidate = getLowLevelPrime(n)
-        if not isMillerRabinPassed(prime_candidate):
-            continue
-        else:
-            print(n, "bit prime is: \n", prime_candidate)
-            break
+n = 1024
+vector=[]
+while len(vector)<2:
+    prime_candidate = getLowLevelPrime(n)
+    if isMillerRabinPassed(prime_candidate):
+        vector.append(prime_candidate)
+p=vector[0]
+q=vector[1]
+n=p*q
+print(p,"\n")
+print(q,"\n")
+print(n)
+
 
 header=1024
 misocket= socket.socket()
