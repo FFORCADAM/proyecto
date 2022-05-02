@@ -115,3 +115,6 @@ time.sleep(5)
 firma=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
 print(firma)
+firmafinal=((1/k)*firma)%n
+f = open("firma.txt", "w")
+f.write(str(firmafinal))
