@@ -1,7 +1,9 @@
+#import pycryptodomex #el paquete es algo así, pero no se me instala
 import hashlib
 import socket
 import random
-
+import time
+from math import gcd
 
 first_primes_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
                      31, 37, 41, 43, 47, 53, 59, 61, 67,
@@ -68,6 +70,11 @@ def isMillerRabinPassed(miller_rabin_candidate):
         if trialComposite(round_tester):
             return False
     return True
+def OpacityFactorCalculation(n):
+    k=random.randint(2, n-1)
+    while gcd(k,n)!=1:
+        k=random.randint(0, n-1)
+    return k
 
 
 n = 1024
@@ -79,22 +86,32 @@ while len(vector)<2:
 p=vector[0]
 q=vector[1]
 n=p*q
-print(p,"\n")
-print(q,"\n")
-print(n)
+k=OpacityFactorCalculation(n)
 
+print(p,"\n")
+time.sleep(5)
+print(q,"\n")
+time.sleep(5)
+print(n)
+time.sleep(5)
+print(k)
+time.sleep(5)
 
 header=1024
 misocket= socket.socket()
 misocket.connect(('localhost', 8000))
-
-hashh=125423453245 #implementar calculo hash
-n=123451235125 #implementar calculo n
+hashh=int(getsha256file("archivo.txt"), base=16)
+print(hashh)
 d=234532452 #implementar calculo d
 hash_length=len(str(hashh))
 misocket.send(hash_length.to_bytes(length=1024, byteorder="big"))
+time.sleep(5)
 misocket.send(hashh.to_bytes(length=hash_length, byteorder="big"))
+time.sleep(5)
 misocket.send(d.to_bytes(length=1024, byteorder="big"))
+time.sleep(5)
 misocket.send(n.to_bytes(length=1024, byteorder="big"))
+time.sleep(5)
 firma=int.from_bytes(misocket.recv(header), byteorder="big")
+time.sleep(5)
 print(firma)
