@@ -1,20 +1,9 @@
-#import pycryptodomex #el paquete es algo así, pero no se me instala
 import hashlib
 import socket
-import random
-import time
-from math import gcd
-import rkjjhgf
-
-first_primes_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
-                     31, 37, 41, 43, 47, 53, 59, 61, 67,
-                     71, 73, 79, 83, 89, 97, 101, 103,
-                     107, 109, 113, 127, 131, 137, 139,
-                     149, 151, 157, 163, 167, 173, 179,
-                     181, 191, 193, 197, 199, 211, 223,
-                     227, 229, 233, 239, 241, 251, 257,
-                     263, 269, 271, 277, 281, 283, 293,
-                     307, 311, 313, 317, 331, 337, 347, 349]
+import rsa
+from rsa import cli
+from rsa import key
+from rsa import prime
 
 #Calcula el hash
 
@@ -32,45 +21,7 @@ def getsha256file(archivo):
         print("Error desconocido")
         return ""
 
-#Elegimos un candidato principal aleatorio
-def nBitRandom(n):
-    return random.randrange(2 ** (n - 1) + 1, 2 ** n - 1)
-
-#Nos aseguramos de que el candidato no es divisible por los primeros números primos
-def getLowLevelPrime(n):
-    while True:
-
-        prime_candidate = nBitRandom(n)
-
-        for divisor in first_primes_list:
-            if prime_candidate % divisor == 0 and divisor ** 2 <= prime_candidate:
-                break
-        else:
-            return prime_candidate
-
-#Prueba de Rabin Miller
-def isMillerRabinPassed(miller_rabin_candidate):
-    maxDivisionsByTwo = 0
-    even_component = miller_rabin_candidate - 1
-    while even_component % 2 == 0:
-        even_component >>= 1
-        maxDivisionsByTwo += 1
-    assert (2 ** maxDivisionsByTwo * even_component == miller_rabin_candidate - 1)
-
-    def trialComposite(round_tester):
-        if pow(round_tester, even_component, miller_rabin_candidate) == 1:
-            return False
-        for i in range(maxDivisionsByTwo):
-            if pow(round_tester, 2 ** i * even_component, miller_rabin_candidate) == miller_rabin_candidate - 1:
-                return False
-        return True
-
-    numberOfRabinTrials = 20
-    for i in range(numberOfRabinTrials):
-        round_tester = random.randrange(2, miller_rabin_candidate)
-        if trialComposite(round_tester):
-            return False
-    return True
+      
 def OpacityFactorCalculation(n):
     k=random.randint(2, n-1)
     while gcd(k,n)!=1:
@@ -78,32 +29,17 @@ def OpacityFactorCalculation(n):
     return k
 
 
-n = 1024
-vector=[]
-while len(vector)<2:
-    prime_candidate = getLowLevelPrime(n)
-    if isMillerRabinPassed(prime_candidate):
-        vector.append(prime_candidate)
-p=vector[0]
-q=vector[1]
-n=p*q
+hashh=getsha256file(input("Introduce el nombre del archivo que quieres firmar: "))
+print(hashh,"\n")
+pub,priv=key.newkeys(2048)
+print(pub) #Devuelve n,e
+print(priv) #Devuelve n,e,d,p,q
 k=OpacityFactorCalculation(n)
 
-print(p,"\n")
-time.sleep(5)
-print(q,"\n")
-time.sleep(5)
-print(n)
-time.sleep(5)
-print(k)
-time.sleep(5)
 
 header=1024
 misocket= socket.socket()
 misocket.connect(('localhost', 8000))
-hashh=int(getsha256file("archivo.txt"), base=16)
-print(hashh)
-d=234532452 #implementar calculo d
 hash_length=len(str(hashh))
 misocket.send(hash_length.to_bytes(length=1024, byteorder="big"))
 time.sleep(5)
