@@ -1,7 +1,11 @@
 import hashlib
 import socket
+import time
+from math import gcd
+import random
+
 import rsa
-from rsa import cli
+from rsa import cli, common
 from rsa import key
 from rsa import prime
 
@@ -21,7 +25,7 @@ def getsha256file(archivo):
         print("Error desconocido")
         return ""
 
-      
+
 def OpacityFactorCalculation(n):
     k=random.randint(2, n-1)
     while gcd(k,n)!=1:
@@ -29,11 +33,11 @@ def OpacityFactorCalculation(n):
     return k
 
 
-hashh=getsha256file(input("Introduce el nombre del archivo que quieres firmar: "))
+hashh=int(getsha256file(input("Introduce el nombre del archivo que quieres firmar: ")), base=16)
 print(hashh,"\n")
 pub,priv=key.newkeys(2048)
-print(pub) #Devuelve n,e
-print(priv) #Devuelve n,e,d,p,q
+
+n=priv.n
 k=OpacityFactorCalculation(n)
 k_inverse=common.inverse(k,getattr(pub,'n'))
 
@@ -41,18 +45,23 @@ k_inverse=common.inverse(k,getattr(pub,'n'))
 header=1024
 misocket= socket.socket()
 misocket.connect(('localhost', 8000))
-hash_length=len(str(hashh))
-misocket.send(hash_length.to_bytes(length=1024, byteorder="big"))
+
+e=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
-misocket.send(hashh.to_bytes(length=hash_length, byteorder="big"))
+x=((k^e)*hashh)%n
+x_length=len(str(x))
 time.sleep(5)
-misocket.send(d.to_bytes(length=1024, byteorder="big"))
+misocket.send(x_length.to_bytes(length=1024, byteorder="big"))
+time.sleep(5)
+misocket.send(x.to_bytes(length=x_length, byteorder="big"))
 time.sleep(5)
 misocket.send(n.to_bytes(length=1024, byteorder="big"))
 time.sleep(5)
 firma=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
 print(firma)
-firmafinal=((1/k)*firma)%n
+firmafinal=float(((k_inverse)*firma)%n)
 f = open("firma.txt", "w")
 f.write(str(firmafinal))
+f.write(str(e))
+f.close()
