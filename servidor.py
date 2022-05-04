@@ -1,5 +1,14 @@
 import socket
 import time
+import rsa                        
+from rsa import cli, PrivateKey   
+from rsa import key               
+from rsa import prime             
+from rsa import common            
+
+pub,priv=key.newkeys(2048)      
+print(pub) #Devuelve n,e        
+print(priv) #Devuelve n,e,d,p,q 
 
 header=1024
 misocket= socket.socket()
