@@ -35,6 +35,7 @@ pub,priv=key.newkeys(2048)
 print(pub) #Devuelve n,e
 print(priv) #Devuelve n,e,d,p,q
 k=OpacityFactorCalculation(n)
+k_inverse=common.inverse(k,getattr(pub,'n'))
 
 
 header=1024
