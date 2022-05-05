@@ -25,7 +25,7 @@ while True:
         x = int.from_bytes(conexion.recv(x_length), byteorder="big")
         time.sleep(5)
         print(x)
-        print("recibida firma")
+        print("recibido x")
         d=priv.d
         time.sleep(5)
         n=int.from_bytes(conexion.recv(header), byteorder="big")
