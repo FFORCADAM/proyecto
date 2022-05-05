@@ -1,13 +1,26 @@
+import socket
+
+from rsa import PublicKey
+
+from Cliente import getsha256file
 import rsa
 
-farch=input("introduce el fichero que quieres verificar")
+archivo=input("Introduce el nombre del archivo que quieres verificar:")
 ffirma=open(input("Introduce el fichero que tiene la firma"))
-firma=int(ffirma.readline())
+header=1024
+versocket= socket.socket()
+versocket.connect(('localhost', 9000))
 
-firma_length=len(str(firma))
+hashh=int(getsha256file(archivo), base=16)
+
+firma=int.from_bytes(ffirma.readline(), byteorder="big")
+
 ffirma.close()
-with open(farch, 'rb') as msgfile:
-    if len(rsa.verify(msgfile, firma.to_bytes(length=firma_length, byteorder="big"), pubkey))>0:
-        print("La firma es válida")
-    else:
-        print("La firma no es válida")
+
+e=int.from_bytes(versocket.recv(header), byteorder="big")
+n=int.from_bytes(versocket.recv(header), byteorder="big")
+
+if hashh==firma^e%n:
+    print("La firma es válida")
+else:
+    print("La firma no es válida")
