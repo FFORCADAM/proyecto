@@ -35,9 +35,9 @@ def OpacityFactorCalculation(n):
 
 hashh=int(getsha256file(input("Introduce el nombre del archivo que quieres firmar: ")), base=16)
 print(hashh,"\n")
-pub,priv=key.newkeys(2048)
+#pub,priv=key.newkeys(2048).  (Por ahora no los usamos)
+#n=priv.n
 
-n=priv.n
 k=OpacityFactorCalculation(n)
 k_inverse=common.inverse(k,getattr(pub,'n'))
 
