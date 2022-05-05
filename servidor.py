@@ -14,7 +14,7 @@ while True:
     conexion, addr = misocket.accept()
     print("Conexión establecida")
     conexion.send(pub.e.to_bytes(byteorder="big", length=1024))
-
+    conexion.send(pub.n.to_bytes(byteorder="big", length=1024))
     x_length= conexion.recv(header)
     time.sleep(5)
     if x_length:
@@ -25,13 +25,22 @@ while True:
         x = int.from_bytes(conexion.recv(x_length), byteorder="big")
         time.sleep(5)
         print(x)
-        print("recibido x")
+        print("recibida firma")
         d=priv.d
         time.sleep(5)
         n=int.from_bytes(conexion.recv(header), byteorder="big")
         time.sleep(5)
         print("recibida n:" + str(n))
-        firmado= (x^d)%n #creo que así se calcula la firma, siendo el "2" el elemento d que no se cual es.
+        firmado= (x^d)%n
         time.sleep(5)
         conexion.send(firmado.to_bytes(byteorder="big", length=1024))
         conexion.close()
+versocket= socket.socket()
+versocket.bind(('localhost', 9000))
+versocket.listen(5)
+formato= 'utf-8'
+while True:
+    conexion, addr = misocket.accept()
+    conexion2.send(pub.e.to_bytes(byteorder="big", length=1024))
+    conexion2.send(pub.n.to_bytes(byteorder="big", length=1024))
+    conexion2.close()
