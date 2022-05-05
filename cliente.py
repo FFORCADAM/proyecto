@@ -34,20 +34,16 @@ def OpacityFactorCalculation(n):
 
 
 hashh=int(getsha256file(input("Introduce el nombre del archivo que quieres firmar: ")), base=16)
-print(hashh,"\n")
-#pub,priv=key.newkeys(2048).  (Por ahora no los usamos)
-#n=priv.n
-
-k=OpacityFactorCalculation(n)
-k_inverse=common.inverse(k,getattr(pub,'n'))
-
 
 header=1024
 misocket= socket.socket()
 misocket.connect(('localhost', 8000))
 
 e=int.from_bytes(misocket.recv(header), byteorder="big")
+n=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
+k=OpacityFactorCalculation(n)
+k_inverse=common.inverse(k,n)
 x=((k^e)*hashh)%n
 x_length=len(str(x))
 time.sleep(5)
@@ -60,13 +56,8 @@ time.sleep(5)
 firma=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
 print(firma)
-firmafinal=float(((k_inverse)*firma)%n)
+firmafinal=((k_inverse)*firma)%n
 
-with open("firma.pem", "wb") as f:
-    f.write(firmafinal)
+with open("firma.txt", "wb") as f:
+    f.write(firmafinal.to_bytes(length=1024, byteorder="big"))
     f.close()
- 
-with open("c_pública.pem", "wb") as q:
-    q.write(publica) #No sabemos bien qué enviar
-    q.close()
-
