@@ -61,7 +61,12 @@ firma=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
 print(firma)
 firmafinal=float(((k_inverse)*firma)%n)
-f = open("firma.txt", "w")
-f.write(str(firmafinal))
-f.write(str(e))
-f.close()
+
+with open("firma.pem", "wb") as f:
+    f.write(firmafinal)
+    f.close()
+ 
+with open("c_pública.pem", "wb") as q:
+    q.write(publica) #No sabemos bien qué enviar
+    q.close()
+
