@@ -61,3 +61,4 @@ firmafinal=((k_inverse)*firma)%n
 with open("firma.txt", "wb") as f:
     f.write(firmafinal.to_bytes(length=1024, byteorder="big"))
     f.close()
+misocket.close()
