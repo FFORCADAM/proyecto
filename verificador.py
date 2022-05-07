@@ -26,23 +26,25 @@ header=1024
 versocket= socket.socket()
 versocket.connect(('localhost', 8000))
 
-hashh=int(getsha256file(archivo), base=16)
+
 time.sleep(5)
-firma=int.from_bytes(bytes(ffirma.readline(), encoding="latin-1"), byteorder="big")
 
-ffirma.close()
 
+
+d=int.from_bytes(versocket.recv(header), byteorder="big")
 e=int.from_bytes(versocket.recv(header), byteorder="big")
 time.sleep(5)
 n=int.from_bytes(versocket.recv(header), byteorder="big")
 time.sleep(5)
+firma=(int.from_bytes(bytes(ffirma.readline(), encoding="latin-1"), byteorder="big"))%n
+ffirma.close()
+hashh=(int(getsha256file(archivo), base=16))%n
 x_length=0
 versocket.send(x_length.to_bytes(length=1024, byteorder="big"))
-comparacion=firma^e%n
-if hashh==firma^e%n:
+if hashh==(firma**e)%n:
     print("La firma es válida")
 else:
     print("La firma no es válida")
     print(hashh)
-    print(comparacion)
+    print(len(str(hashh)))
 versocket.close()
