@@ -1,7 +1,7 @@
 import hashlib
 import socket
 import time
-from math import gcd
+from math import gcd, modf
 import random
 
 import rsa
@@ -38,13 +38,13 @@ hashh=int(getsha256file(input("Introduce el nombre del archivo que quieres firma
 header=1024
 misocket= socket.socket()
 misocket.connect(('localhost', 8000))
-
+d=int.from_bytes(misocket.recv(header), byteorder="big")
 e=int.from_bytes(misocket.recv(header), byteorder="big")
 n=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
 k=OpacityFactorCalculation(n)
 k_inverse=common.inverse(k,n)
-x=((k^e)*hashh)%n
+x=((k**e)*hashh)%n
 x_length=len(str(x))
 time.sleep(5)
 misocket.send(x_length.to_bytes(length=1024, byteorder="big"))
