@@ -1,10 +1,11 @@
 import socket
 import time
 from rsa import key
+from rsa import PublicKey
 
 
 header=1024
-pub,priv=key.newkeys(32)
+pub,priv=key.newkeys(16)
 
 misocket= socket.socket()
 misocket.bind(('localhost', 8000))
@@ -36,4 +37,3 @@ while True:
         time.sleep(5)
         conexion.send(firmado.to_bytes(byteorder="big", length=1024))
         conexion.close()
-
