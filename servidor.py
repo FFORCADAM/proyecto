@@ -2,38 +2,42 @@ import socket
 import time
 from rsa import key
 from rsa import PublicKey
-
-
 header=1024
 pub,priv=key.newkeys(16)
+
+try:
+    print("Obtenemos del archivo pubkey.pem la clave pública")
+    pubkey=PublicKey._load_pkcs1_pem(open("pubKey.pem", "rb").read())
+    e=pubkey.e
+    n=pubkey.n
+except IOError:
+    print('El servidor no se ha ejecutado nunca o se ha movido el fichero de la clave pública de sitio; procedemos a crear el archivo pubkey.pem para guardar la clave pública disponible aun con el servidor apagado ')
+    with open("pubKey.pem", "wb") as q:
+        q.write(PublicKey._save_pkcs1_pem(pub))
+        e=pub.e
+        n=pub.n
+        q.close()
 
 misocket= socket.socket()
 misocket.bind(('localhost', 8000))
 misocket.listen(5)
-formato= 'utf-8'
 while True:
     conexion, addr = misocket.accept()
     print("Conexión establecida")
-    conexion.send(priv.d.to_bytes(byteorder="big", length=1024))
-    conexion.send(pub.e.to_bytes(byteorder="big", length=1024))
-    conexion.send(pub.n.to_bytes(byteorder="big", length=1024))
-    x_length= conexion.recv(header)
-    x_lengthint=int.from_bytes(x_length, byteorder="big")
+    x_length= int.from_bytes(conexion.recv(header), byteorder="big")
     time.sleep(5)
-    if x_length and x_lengthint>0:
+    if x_length:
         print("recibida longitud firma")
         time.sleep(5)
-        print(x_lengthint)
-        x = int.from_bytes(conexion.recv(x_lengthint), byteorder="big")
+        x = int.from_bytes(conexion.recv(x_length), byteorder="big")
         time.sleep(5)
         print(x)
         print("recibida firma")
         d=priv.d
         time.sleep(5)
-        n=int.from_bytes(conexion.recv(header), byteorder="big")
-        time.sleep(5)
-        print("recibida n:" + str(n))
+        print("Comienza el cálculo de firma")
         firmado= (x**d)%n
         time.sleep(5)
         conexion.send(firmado.to_bytes(byteorder="big", length=1024))
+        print("Se completó la operación con exito, se cierra la conexión")
         conexion.close()
