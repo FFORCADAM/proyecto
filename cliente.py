@@ -8,6 +8,7 @@ import rsa
 from rsa import cli, common
 from rsa import key
 from rsa import prime
+from rsa import PublicKey
 
 #Calcula el hash
 
@@ -57,8 +58,14 @@ firma=int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(5)
 print(firma)
 firmafinal=((k_inverse)*firma)%n
+clave_pub=PublicKey(n,e)
 
 with open("firma.txt", "wb") as f:
     f.write(firmafinal.to_bytes(length=1024, byteorder="big"))
     f.close()
+
+with open("pubKey.pem", "wb") as q:
+    q.write(PublicKey._save_pkcs1_pem(clave_pub))
+    q.close()
+
 misocket.close()
