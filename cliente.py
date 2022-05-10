@@ -37,7 +37,7 @@ e=pubkey.e
 n=pubkey.n
 k=OpacityFactorCalculation(n)
 k_inverse=common.inverse(k,n)
-x=((k**e)*hashh)%n
+x=((pow(k,e)*hashh)%n)
 x_length=len(str(x))
 time.sleep(5)
 misocket.send(x_length.to_bytes(length=1024, byteorder="big"))
