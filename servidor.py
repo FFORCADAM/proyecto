@@ -36,7 +36,7 @@ while True:
         d=priv.d
         time.sleep(5)
         print("Comienza el cálculo de firma")
-        firmado= (x**d)%n
+        firmado= pow(x,d,n)
         time.sleep(5)
         conexion.send(firmado.to_bytes(byteorder="big", length=1024))
         print("Se completó la operación con exito, se cierra la conexión")
