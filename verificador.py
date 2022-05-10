@@ -24,7 +24,7 @@ n=pubkey.n
 firma=(int.from_bytes(bytes(ffirma.readline(), encoding="latin-1"), byteorder="big"))%n
 ffirma.close()
 hashh=(int(getsha256file(archivo), base=16))%n
-comparacion=(firma**e)%n
+comparacion=pow(firma,e,n)
 if hashh==comparacion:
     print("La firma es válida")
 else:
