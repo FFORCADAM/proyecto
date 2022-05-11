@@ -1,10 +1,9 @@
 import socket
 import time
 from rsa import key
-from rsa import PublicKey
-from rsa import PrivateKey
+from rsa import PublicKey, PrivateKey
 header=1024
-pub,priv=key.newkeys(16)
+pub,priv=key.newkeys(2048)
 
 try:
     pubkey=PublicKey._load_pkcs1_pem(open("pubKey.pem", "rb").read())
@@ -24,7 +23,6 @@ except IOError:
         p.write(PrivateKey._save_pkcs1_pem(priv))
         d=priv.d
         p.close()
-
 misocket= socket.socket()
 misocket.bind(('localhost', 8000))
 misocket.listen(5)
@@ -32,18 +30,19 @@ while True:
     conexion, addr = misocket.accept()
     print("Conexión establecida")
     x_length= int.from_bytes(conexion.recv(header), byteorder="big")
-    time.sleep(5)
+    time.sleep(1)
     if x_length:
         print("recibida longitud firma")
-        time.sleep(5)
+        time.sleep(1)
         x = int.from_bytes(conexion.recv(x_length), byteorder="big")
-        time.sleep(5)
+        time.sleep(1)
         print(x)
         print("recibida firma")
-        time.sleep(5)
+        time.sleep(1)
         print("Comienza el cálculo de firma")
-        firmado= pow(x,d,n)
-        time.sleep(5)
+        firmado=pow(x,d,n)
+        time.sleep(1)
         conexion.send(firmado.to_bytes(byteorder="big", length=1024))
         print("Se completó la operación con exito, se cierra la conexión")
         conexion.close()
+
