@@ -2,6 +2,7 @@ import socket
 import time
 from rsa import key
 from rsa import PublicKey
+from rsa import PrivateKey
 header=1024
 pub,priv=key.newkeys(16)
 
