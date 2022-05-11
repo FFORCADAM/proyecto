@@ -21,7 +21,7 @@ clavepub=open("pubKey.pem", "rb")
 pubkey=PublicKey._load_pkcs1_pem(clavepub.read())
 e=pubkey.e
 n=pubkey.n
-firma=(int.from_bytes(bytes(ffirma.readline(), encoding="latin-1"), byteorder="big"))%n
+firma=(int.from_bytes(bytes(ffirma.read().lstrip(), encoding="latin-1"), byteorder="big"))%n
 ffirma.close()
 hashh=(int(getsha256file(archivo), base=16))%n
 comparacion=pow(firma,e,n)
