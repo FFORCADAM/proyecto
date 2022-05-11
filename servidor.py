@@ -6,10 +6,12 @@ header=1024
 pub,priv=key.newkeys(16)
 
 try:
-    print("Obtenemos del archivo pubkey.pem la clave pública")
     pubkey=PublicKey._load_pkcs1_pem(open("pubKey.pem", "rb").read())
+    print("Obtenemos del archivo pubkey.pem la clave pública")
     e=pubkey.e
     n=pubkey.n
+    privkey=PrivateKey._load_pkcs1_pem(open("privKey.pem", "rb").read())
+    d=privkey.d
 except IOError:
     print('El servidor no se ha ejecutado nunca o se ha movido el fichero de la clave pública de sitio; procedemos a crear el archivo pubkey.pem para guardar la clave pública disponible aun con el servidor apagado ')
     with open("pubKey.pem", "wb") as q:
@@ -17,6 +19,10 @@ except IOError:
         e=pub.e
         n=pub.n
         q.close()
+    with open("privKey.pem", "wb") as p:
+        p.write(PrivateKey._save_pkcs1_pem(priv))
+        d=priv.d
+        p.close()
 
 misocket= socket.socket()
 misocket.bind(('localhost', 8000))
