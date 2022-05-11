@@ -39,7 +39,6 @@ while True:
         time.sleep(5)
         print(x)
         print("recibida firma")
-        d=priv.d
         time.sleep(5)
         print("Comienza el cálculo de firma")
         firmado= pow(x,d,n)
