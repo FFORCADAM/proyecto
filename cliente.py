@@ -35,6 +35,7 @@ print("El cliente calcula el hash del archivo.")
 header = 1024
 misocket = socket.socket()
 misocket.connect(('localhost', 8000))
+time.sleep(2)
 print("El cliente ha obtenido la clave pública del servidor y ciega el hash a partir de ella.")
 pubkey = PublicKey._load_pkcs1_pem(open("pubKey.pem", "rb").read())
 e = pubkey.e
