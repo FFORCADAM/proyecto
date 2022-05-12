@@ -49,7 +49,7 @@ misocket.send(x.to_bytes(length=x_length, byteorder="big"))
 time.sleep(1)
 firma = int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(1)
-print(firma)
+#print(firma)
 firmafinal = ((k_inverse) * firma) % n
 with open("firma.txt", "wb") as f:
     f.write(firmafinal.to_bytes(length=1024, byteorder="big"))
