@@ -32,8 +32,8 @@ while True:
     x_length= int.from_bytes(conexion.recv(header), byteorder="big")
     time.sleep(1)
     if x_length:
-        print("recibida longitud firma de parte del cliente")
-        time.sleep(1)
+        #print("recibida longitud firma de parte del cliente")
+        #time.sleep(1)
         x = int.from_bytes(conexion.recv(x_length), byteorder="big")
         time.sleep(1)
         print(x)
