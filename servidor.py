@@ -13,7 +13,7 @@ try:
     privkey=PrivateKey._load_pkcs1_pem(open("privKey.pem", "rb").read())
     d=privkey.d
 except IOError:
-    print('El servidor no se ha ejecutado nunca o se ha movido el fichero de la clave pública de sitio.',\n,'Procedemos a crear el archivo pubKey.pem para guardar la clave pública disponible aun con el servidor apagado ')
+    print('El servidor no se ha ejecutado nunca o se ha movido el fichero de la clave pública de sitio. Procedemos a crear el archivo pubKey.pem para guardar la clave pública disponible aun con el servidor apagado ')
     with open("pubKey.pem", "wb") as q:
         q.write(PublicKey._save_pkcs1_pem(pub))
         e=pub.e
@@ -32,7 +32,7 @@ while True:
     x_length= int.from_bytes(conexion.recv(header), byteorder="big")
     time.sleep(1)
     if x_length:
-        #print("recibida longitud firma de parte del cliente")
+        print("recibida longitud firma de parte del cliente")
         #time.sleep(1)
         x = int.from_bytes(conexion.recv(x_length), byteorder="big")
         time.sleep(1)
