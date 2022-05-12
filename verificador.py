@@ -29,8 +29,8 @@ with open(ffirma,"r",encoding='latin-1') as f:
         lineastrip=readline
         firma +=lineastrip
 
-hashh=(int(getsha256file(archivo), base=16))%n #Con los %n no tengo claro qué hacer, si sobran yo los quitaba.
-comparacion=pow(int(firma),e,n)%n
+hashh=(int(getsha256file(archivo), base=16)) #Con los %n no tengo claro qué hacer, si sobran yo los quitaba.
+comparacion=pow(int(firma),e,n)
 if hashh==comparacion:
     print("La firma corresponde al fichero de entrada")
 else:
