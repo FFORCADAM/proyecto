@@ -3,7 +3,6 @@ import time
 from rsa import key
 from rsa import PublicKey, PrivateKey
 header=1024
-pub,priv=key.newkeys(2048)
 
 try:
     pubkey=PublicKey._load_pkcs1_pem(open("pubKey.pem", "rb").read())
@@ -14,6 +13,7 @@ try:
     d=privkey.d
 except IOError:
     print('El servidor no se ha ejecutado nunca o se ha movido el fichero de la clave pública de sitio. Procedemos a crear el archivo pubKey.pem para guardar la clave pública disponible aun con el servidor apagado ')
+    pub,priv=key.newkeys(2048)
     with open("pubKey.pem", "wb") as q:
         q.write(PublicKey._save_pkcs1_pem(pub))
         e=pub.e
