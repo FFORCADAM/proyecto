@@ -26,10 +26,10 @@ ffirma.close()
 hashh=(int(getsha256file(archivo), base=16))%n
 comparacion=pow(firma,e,n)
 if hashh==comparacion:
-    print("La firma es válida")
+    print("La firma corresponde al fichero de entrada")
 else:
-    print("La firma no es válida")
-    print(hashh)
-    print(comparacion)
+    print("La firma no corresponde al fichero de entrada")
+    #print(hashh)
+    #print(comparacion)
 clavepub.close()
 
