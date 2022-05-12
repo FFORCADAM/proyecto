@@ -41,6 +41,6 @@ while True:
         time.sleep(1)
         print("El servidor lo envía de vuelta al cliente firmado")
         conexion.send(firmado.to_bytes(byteorder="big", length=1024))
-        print("Se completó la operación de firmado con exito, se cierra la conexión.")
+        print("Se completó la operación de firmado con éxito, se cierra la conexión.")
         conexion.close()
 
