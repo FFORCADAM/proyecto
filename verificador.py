@@ -22,14 +22,13 @@ pubkey=PublicKey._load_pkcs1_pem(clavepub.read())
 e=pubkey.e
 n=pubkey.n
 
-hashh=(int(getsha256file(archivo), base=16))%n
+hashh=int(getsha256file(archivo), base=16)
 with open(ffirma,"r",encoding='latin-1') as f:
     firma=""
     for readline in f:
         lineastrip=readline
         firma +=lineastrip
 
-hashh=(int(getsha256file(archivo), base=16)) #Con los %n no tengo claro qué hacer, si sobran yo los quitaba.
 comparacion=pow(int(firma),e,n)
 if hashh==comparacion:
     print("La firma corresponde al fichero de entrada")
