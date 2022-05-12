@@ -36,4 +36,4 @@ if hashh==comparacion:
 else:
     print("La firma no corresponde al fichero de entrada")
 clavepub.close()
-ffirma.close()
+f.close()
