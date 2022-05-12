@@ -40,7 +40,8 @@ e = pubkey.e
 n = pubkey.n
 k = OpacityFactorCalculation(n)
 k_inverse = common.inverse(k, n)
-x = (hashh * pow(k, e)) % n
+x = (hashh * pow(k, e, n)) % n
+print("Acaba x")
 x_length = len(str(x))
 time.sleep(1)
 misocket.send(x_length.to_bytes(length=1024, byteorder="big"))
@@ -51,7 +52,8 @@ firma = int.from_bytes(misocket.recv(header), byteorder="big")
 time.sleep(1)
 #print(firma)
 firmafinal = ((k_inverse) * firma) % n
-with open("firma.txt", "wb") as f:
-    f.write(firmafinal.to_bytes(length=1024, byteorder="big"))
+nombre_final=input("Introduce el nombre del archivo donde quieras guardar la firma (Se guardará donde estés trabajando): ")
+with open(nombre_final, "w") as f:
+    f.write(str(firmafinal))
     f.close()
 misocket.close()
