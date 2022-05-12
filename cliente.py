@@ -41,7 +41,6 @@ n = pubkey.n
 k = OpacityFactorCalculation(n)
 k_inverse = common.inverse(k, n)
 x = (hashh * pow(k, e, n)) % n
-print("Acaba x")
 x_length = len(str(x))
 time.sleep(1)
 misocket.send(x_length.to_bytes(length=1024, byteorder="big"))
