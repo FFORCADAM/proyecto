@@ -29,14 +29,11 @@ with open(ffirma,"r",encoding='latin-1') as f:
         lineastrip=readline
         firma +=lineastrip
 
-#firma=(int.from_bytes(bytes(ffirma.read().lstrip(), encoding="latin-1"), byteorder="big"))%n
-#ffirma.close()
-hashh=(int(getsha256file(archivo), base=16))%n
+hashh=(int(getsha256file(archivo), base=16))%n #Con los %n no tengo claro qué hacer, si sobran yo los quitaba.
 comparacion=pow(int(firma),e,n)%n
 if hashh==comparacion:
     print("La firma corresponde al fichero de entrada")
 else:
     print("La firma no corresponde al fichero de entrada")
-    #print(hashh)
-    #print(comparacion)
 clavepub.close()
+ffirma.close()
